@@ -24,8 +24,7 @@ pub fn get_args() -> MyResult<Config> {
             Arg::new("files")
                 .value_name("FILES")
                 .help("files to cat")
-                .action(ArgAction::Append)
-                .required(true),
+                .action(ArgAction::Append),
         )
         .arg(
             Arg::new("number")
@@ -43,10 +42,10 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
-    let files: Vec<String> = args
+    let files = args
         .get_many::<String>("files")
-        .unwrap()
-        .filter_map(|s: &String| s.parse().ok())
+        .ok_or("arg not found")?
+        .filter_map(|s: &String| s.parse::<String>().ok())
         .collect();
 
     Ok(Config {
