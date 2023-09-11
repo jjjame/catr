@@ -44,7 +44,7 @@ pub fn get_args() -> MyResult<Config> {
 
     let files = args
         .get_many::<String>("files")
-        .ok_or("arg not found")?
+        .ok_or("argument files not found")?
         .filter_map(|s: &String| s.parse::<String>().ok())
         .collect();
 
