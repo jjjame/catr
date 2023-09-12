@@ -11,7 +11,9 @@ pub struct Config {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    dbg!(config);
+    for filename in config.files {
+        println!("{filename}")
+    }
     Ok(())
 }
 
@@ -24,20 +26,23 @@ pub fn get_args() -> MyResult<Config> {
             Arg::new("files")
                 .value_name("FILES")
                 .help("files to cat")
-                .action(ArgAction::Append),
+                .action(ArgAction::Append)
+                .default_value("-"),
         )
         .arg(
             Arg::new("number")
                 .value_name("NUMBER")
-                .help("display line numbers")
+                .help("Number lines")
                 .short('n')
+                .long("number")
                 .num_args(0),
         )
         .arg(
-            Arg::new("number_non_blank")
-                .value_name("NUMBER_NON_BLANK")
-                .help("display line numbers non blank")
+            Arg::new("number_nonblank")
+                .value_name("NUMBER_NONBLANK")
+                .help("Number non-blank lines")
                 .short('b')
+                .long("number-nonblank")
                 .num_args(0),
         )
         .get_matches();
@@ -51,6 +56,6 @@ pub fn get_args() -> MyResult<Config> {
     Ok(Config {
         files,
         number_lines: args.get_flag("number"),
-        number_non_blank_line: args.get_flag("number_non_blank"),
+        number_non_blank_line: args.get_flag("number_nonblank"),
     })
 }
