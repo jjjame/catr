@@ -16,7 +16,15 @@ pub fn run(config: Config) -> MyResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("failed to open {}: {}", filename, err),
-            Ok(_) => println!("opened file {}", filename),
+            Ok(file) => {
+                for (idx, line) in file.lines().enumerate() {
+                    if config.number_lines {
+                        println!("{} {}", (idx + 1), line?);
+                    } else {
+                        println!("{}", line?);
+                    }
+                }
+            }
         }
     }
     Ok(())

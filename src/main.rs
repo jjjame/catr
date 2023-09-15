@@ -1,3 +1,3 @@
 fn main() {
-    if let Err(e) = catr::get_args().and_then(catr::run) {}
+    if let Err(_e) = catr::get_args().and_then(catr::run) {}
 }
