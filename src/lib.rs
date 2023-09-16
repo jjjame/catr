@@ -17,11 +17,23 @@ pub fn run(config: Config) -> MyResult<()> {
         match open(&filename) {
             Err(err) => eprintln!("failed to open {}: {}", filename, err),
             Ok(file) => {
-                for (idx, line) in file.lines().enumerate() {
-                    if config.number_lines {
-                        println!("{} {}", (idx + 1), line?);
+                let mut i = 1;
+
+                for line in file.lines() {
+                    let current_line = line?;
+                    let is_empty = current_line.trim().is_empty();
+                    if config.number_non_blank_line {
+                        if is_empty {
+                            println!("{}", current_line);
+                        } else {
+                            println!("{}    {}", i, current_line);
+                            i += 1;
+                        }
+                    } else if config.number_lines {
+                        println!("{}    {}", i, current_line);
+                        i += 1;
                     } else {
-                        println!("{}", line?);
+                        println!("{}", current_line);
                     }
                 }
             }
